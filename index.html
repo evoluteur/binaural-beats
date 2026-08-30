@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-063933E3C2"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-063933E3C2");
+    </script>
+    <title>Binaural Beats - Delta, Theta, Alpha, Beta, and Gamma</title>
+    <link rel="canonical" href="https://evoluteur.github.io/binaural-beats/" />
+    <meta charset="utf-8" />
+    <meta http-equiv="content-language" content="en" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="icon-192.png" />
+    <meta name="theme-color" content="#bbdefb" />
+    <link href="bb.css" rel="stylesheet" />
+    <script>
+      if ("serviceWorker" in navigator) {
+        addEventListener("load", () =>
+          navigator.serviceWorker.register("sw.js"),
+        );
+      }
+    </script>
+    <meta
+      name="keywords"
+      content="binaural beats, brainwave, entrainment, delta, theta, alpha, beta, gamma, schumann, sleep, meditation, relaxation, focus, pink noise, brown noise, web-audio"
+    />
+    <meta
+      name="description"
+      content="Play binaural beats for sleep, meditation, relaxation, and focus: Delta, Theta, Alpha, Beta, and Gamma brainwave frequencies, with an optional pink or brown noise bed."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://evoluteur.github.io/binaural-beats/"
+    />
+    <meta
+      property="og:title"
+      content="Binaural Beats - Delta, Theta, Alpha, Beta, and Gamma"
+    />
+    <meta
+      property="og:description"
+      content="Play binaural beats for sleep, meditation, relaxation, and focus, with an optional pink or brown noise bed."
+    />
+    <meta
+      property="og:image"
+      content="https://raw.githubusercontent.com/evoluteur/binaural-beats/main/bb-player.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Binaural Beats - Delta, Theta, Alpha, Beta, and Gamma"
+    />
+    <meta
+      name="twitter:description"
+      content="Play binaural beats for sleep, meditation, relaxation, and focus, with an optional pink or brown noise bed."
+    />
+    <meta
+      name="twitter:image"
+      content="https://raw.githubusercontent.com/evoluteur/binaural-beats/main/bb-player.png"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Marcellus"
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Binaural Beats",
+        "url": "https://evoluteur.github.io/binaural-beats/",
+        "description": "Play binaural beats for sleep, meditation, relaxation, and focus: Delta, Theta, Alpha, Beta, and Gamma brainwave frequencies.",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Any",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "author": {
+          "@type": "Person",
+          "name": "Olivier Giulieri",
+          "url": "https://evoluteur.github.io/"
+        }
+      }
+    </script>
+  </head>
+
+  <body onload="init()">
+    <header id="header" class="w-nav">
+      <div id="progress"></div>
+      <h1 id="title">Binaural Beats</h1>
+      <div id="scale">
+        <a href="brainwave-scale.html">Chart</a>
+      </div>
+      <select onchange="setDuration(this)" id="duration">
+        <option value="300">5 minutes</option>
+        <option value="600">10 minutes</option>
+        <option value="900">15 minutes</option>
+        <option value="1200">20 minutes</option>
+        <option value="1800">30 minutes</option>
+        <option value="2700">45 minutes</option>
+        <option value="3600">1 hour</option>
+      </select>
+      <div id="remain"></div>
+      <button id="stop" onClick="stop()">
+        <div></div>
+        STOP
+      </button>
+      <div class="nav">
+        <a href="#delta">Delta</a>
+        <a href="#theta">Theta</a>
+        <a href="#alpha">Alpha</a>
+        <a href="#beta">Beta</a>
+        <a href="#gamma">Gamma</a>
+        <a href="#custom">Custom</a>
+      </div>
+    </header>
+
+    <div class="body">
+      <p class="headphones">
+        <b>Wear headphones.</b> A binaural beat is not in the sound, it is in
+        the difference between your ears: one tone goes left, a slightly higher
+        one goes right, and the pulse you hear is made by your own hearing. On
+        speakers the two tones mix in the air and the effect is gone.
+      </p>
+
+      <div class="fs knobs" id="sound">
+        <h2>Sound</h2>
+        <div class="knob">
+          <label>Volume <b id="volumeVal"></b></label>
+          <input
+            type="range"
+            id="volume"
+            min="5"
+            max="100"
+            step="5"
+            value="70"
+            oninput="setVolume(this)"
+          />
+        </div>
+        <div class="knob">
+          <label>Noise bed</label>
+          <select id="noise" onchange="setNoise(this)">
+            <option value="none">No noise</option>
+            <option value="pink">Pink noise</option>
+            <option value="brown">Brown noise</option>
+          </select>
+        </div>
+        <div class="knob">
+          <label>Noise level <b id="noisevolVal"></b></label>
+          <input
+            type="range"
+            id="noisevol"
+            min="0"
+            max="60"
+            step="5"
+            value="25"
+            oninput="setNoiseVolume(this)"
+          />
+        </div>
+      </div>
+
+      <div class="fs" id="delta">
+        <h2>Delta <small>0.5 - 4 Hz &middot; deep sleep</small></h2>
+        <p>
+          The slowest rhythm, dominant in dreamless sleep and in the first
+          months of life. Associated with physical restoration and the release
+          of growth hormone.
+        </p>
+        <button onclick="play(this, 2, 100)">
+          <span>2 Hz</span> Deep sleep
+        </button>
+        <button onclick="play(this, 3, 110)">
+          <span>3 Hz</span> Physical restoration
+        </button>
+        <button onclick="play(this, 3.5, 120)">
+          <span>3.5 Hz</span> Falling asleep
+        </button>
+      </div>
+
+      <div class="fs" id="theta">
+        <h2>
+          Theta <small>4 - 8 Hz &middot; drowsiness and deep meditation</small>
+        </h2>
+        <p>
+          The border between waking and sleep: hypnagogic imagery, deep
+          meditation, REM sleep, and the loose associative thinking that often
+          precedes an idea.
+        </p>
+        <button onclick="play(this, 4.5, 140)">
+          <span>4.5 Hz</span> Drifting off
+        </button>
+        <button onclick="play(this, 6, 150)">
+          <span>6 Hz</span> Deep meditation
+        </button>
+        <button onclick="play(this, 6.3, 160)">
+          <span>6.3 Hz</span> Creative reverie
+        </button>
+        <button onclick="play(this, 7.83, 180)">
+          <span>7.83 Hz</span> Schumann resonance
+        </button>
+        <p>
+          7.83 Hz is the Earth's own background resonance - too low for a
+          speaker to reproduce, but perfectly playable as a beat.
+        </p>
+      </div>
+
+      <div class="fs" id="alpha">
+        <h2>Alpha <small>8 - 13 Hz &middot; relaxed wakefulness</small></h2>
+        <p>
+          The rhythm that appears when you close your eyes and stop working at
+          anything. Calm, receptive, awake. The first brainwave ever recorded,
+          by Hans Berger in 1924.
+        </p>
+        <button onclick="play(this, 8.5, 190)">
+          <span>8.5 Hz</span> Letting go
+        </button>
+        <button onclick="play(this, 10, 200)">
+          <span>10 Hz</span> Calm and relaxed
+        </button>
+        <button onclick="play(this, 11, 210)">
+          <span>11 Hz</span> Light meditation
+        </button>
+        <button onclick="play(this, 12, 220)">
+          <span>12 Hz</span> Effortless flow
+        </button>
+      </div>
+
+      <div class="fs" id="beta">
+        <h2>Beta <small>13 - 30 Hz &middot; alert and focused</small></h2>
+        <p>
+          Ordinary waking attention: reading, talking, solving a problem. Low
+          beta is steady focus; high beta shades into alertness and, past a
+          point, anxiety.
+        </p>
+        <button onclick="play(this, 14, 230)">
+          <span>14 Hz</span> Settled focus
+        </button>
+        <button onclick="play(this, 16, 240)">
+          <span>16 Hz</span> Focused work
+        </button>
+        <button onclick="play(this, 20, 250)">
+          <span>20 Hz</span> Alert concentration
+        </button>
+        <button onclick="play(this, 25, 260)">
+          <span>25 Hz</span> High alertness
+        </button>
+      </div>
+
+      <div class="fs" id="gamma">
+        <h2>Gamma <small>30 - 100 Hz &middot; peak concentration</small></h2>
+        <p>
+          The fastest band, linked to binding separate perceptions into one
+          experience, and to moments of insight. Hardest to entrain, and the
+          most debated.
+        </p>
+        <button onclick="play(this, 35, 280)">
+          <span>35 Hz</span> Sharp attention
+        </button>
+        <button onclick="play(this, 40, 300)">
+          <span>40 Hz</span> Insight and binding
+        </button>
+      </div>
+
+      <div class="fs knobs" id="custom">
+        <h2>Custom</h2>
+        <p>
+          The <b>beat</b> is the difference between your ears, and the band it
+          falls in. The <b>carrier</b> is the pitch you actually hear - the beat
+          is easiest to perceive with a carrier between 100 and 400 Hz.
+        </p>
+        <div class="knob">
+          <label>
+            Beat <b id="beatVal">10.0</b> Hz &mdash;
+            <span id="beatBand"></span>
+          </label>
+          <input
+            type="range"
+            id="beat"
+            min="0.5"
+            max="40"
+            step="0.1"
+            value="10"
+            oninput="setBeat(this)"
+          />
+        </div>
+        <div class="knob">
+          <label>Carrier <b id="carrierVal">200</b> Hz</label>
+          <input
+            type="range"
+            id="carrier"
+            min="60"
+            max="500"
+            step="5"
+            value="200"
+            oninput="setCarrier(this)"
+          />
+        </div>
+        <button class="play" onclick="playCustom(this)">
+          <div></div>
+          Play this beat
+        </button>
+        <p>
+          While a session is playing, moving either slider glides the tones to
+          the new setting instead of restarting them.
+        </p>
+      </div>
+
+      <div class="benefits">
+        <h3>About binaural beats</h3>
+        <p>
+          Heinrich Wilhelm Dove described the effect in 1839: two tones close in
+          pitch, one per ear, and the brainstem reports a third pulse at their
+          difference. The modern claim, called brainwave entrainment, is that
+          sustained exposure nudges cortical rhythm toward that difference.
+        </p>
+        <p>
+          The honest summary of the research: studies most consistently report
+          modest effects on <b>anxiety</b>, <b>relaxation</b>, and
+          <b>subjective sleep quality</b>. Results for memory and attention are
+          mixed, sample sizes are usually small, and it is hard to tell the beat
+          apart from the simple act of sitting still with headphones on for
+          twenty minutes. Treat it as a pleasant timer for doing nothing, and
+          anything more is a bonus.
+        </p>
+        <p>
+          If you have epilepsy or a seizure disorder, are wearing a pacemaker,
+          or are pregnant, ask a doctor before using brainwave entrainment. Do
+          not listen while driving.
+        </p>
+      </div>
+
+      <div class="footer">
+        <p>
+          <a href="brainwave-scale.html"
+            >See every preset on the brainwave chart</a
+          >
+        </p>
+        <p>
+          Binaural Beats is Open Source at
+          <a
+            href="https://github.com/evoluteur/binaural-beats"
+            target="_blank"
+            rel="noopener"
+            >GitHub</a
+          >
+          with MIT license. Encourage this project by
+          <a
+            href="https://github.com/sponsors/evoluteur"
+            target="_blank"
+            rel="noopener"
+            >becoming a sponsor</a
+          >.
+        </p>
+        <p>
+          You may also like
+          <a
+            href="https://evoluteur.github.io/healing-frequencies/"
+            target="_blank"
+            rel="noopener"
+            >Healing Frequencies</a
+          >,
+          <a
+            href="https://evoluteur.github.io/sacred-geometry/"
+            target="_blank"
+            rel="noopener"
+            >Sacred Geometry</a
+          >, and
+          <a
+            href="https://evoluteur.github.io/motivational-numerology/"
+            target="_blank"
+            rel="noopener"
+            >Motivational Numerology</a
+          >.
+        </p>
+        <p>
+          (c) 2026
+          <a href="https://evoluteur.github.io/" target="_blank" rel="noopener"
+            >Olivier Giulieri</a
+          >
+        </p>
+      </div>
+    </div>
+
+    <script src="beats.js"></script>
+    <script src="js/bb.js"></script>
+  </body>
+</html>

@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-063933E3C2"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-063933E3C2");
+    </script>
+    <title>Brainwave Chart: Delta to Gamma, 0 to 42 Hz</title>
+    <link
+      rel="canonical"
+      href="https://evoluteur.github.io/binaural-beats/brainwave-scale.html"
+    />
+    <meta charset="utf-8" />
+    <meta http-equiv="content-language" content="en" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="icon-192.png" />
+    <meta name="theme-color" content="#bbdefb" />
+    <link href="bb.css" rel="stylesheet" />
+    <script>
+      if ("serviceWorker" in navigator) {
+        addEventListener("load", () =>
+          navigator.serviceWorker.register("sw.js"),
+        );
+      }
+    </script>
+    <meta
+      name="description"
+      content="Every brainwave band from Delta to Gamma on one scale, 0 to 42 Hz, with each binaural beat preset placed on it."
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Marcellus"
+    />
+    <style>
+      #chart {
+        position: relative;
+        margin: 20px 0 80px;
+        > div {
+          position: absolute;
+        }
+        > .band {
+          left: 10px;
+          width: 30px;
+          border-radius: 4px;
+          opacity: 0.85;
+        }
+        > .bandname {
+          left: 46px;
+          width: 132px;
+          box-sizing: border-box;
+          padding: 3px 8px;
+          border-radius: 4px;
+          color: black;
+          line-height: 1.35;
+        }
+        > .tick {
+          left: 216px;
+          width: 8px;
+          height: 1px;
+          background-color: #ffffff80;
+        }
+        > .hz {
+          left: 156px;
+          width: 50px;
+          text-align: right;
+          color: #c6d9f0;
+          font-size: 13px;
+          margin-top: -9px;
+        }
+        > .axis {
+          top: 0;
+          left: 215px;
+          border-left: 1px solid #ffffff80;
+        }
+        > .dot {
+          left: 220px;
+          height: 2px;
+          width: 20px;
+          background-color: white;
+        }
+        > .preset {
+          left: 244px;
+          margin-top: -13px;
+          padding: 3px 10px;
+          border: solid 1px white;
+          border-radius: 4px;
+          background-color: #ffffff1a;
+          white-space: nowrap;
+          > a {
+            color: white;
+            text-decoration: none;
+            > b {
+              color: #ffb74d;
+              font-weight: normal;
+              margin-right: 6px;
+            }
+          }
+          &:hover {
+            background-color: white;
+            > a {
+              color: black;
+              > b {
+                color: #b71c1c;
+              }
+            }
+          }
+        }
+      }
+      .legend {
+        margin: 24px 0 20px 10px;
+        max-width: 640px;
+      }
+    </style>
+  </head>
+
+  <body onload="chart()">
+    <header id="header">
+      <h1>Brainwave Chart</h1>
+      <div class="nav" style="position: static; margin: 6px 0 10px 10px">
+        <a href="index.html">&larr; Back to the player</a>
+      </div>
+    </header>
+
+    <p class="legend">
+      Every band from the slowest to the fastest, on one scale. Each preset
+      below is a binaural beat you can play - pick one and it opens in the
+      player, tuned and ready. Gamma continues past the bottom of this chart, up
+      to about 100 Hz.
+    </p>
+
+    <div id="chart"></div>
+
+    <div class="footer">
+      <p>
+        Binaural Beats is Open Source at
+        <a
+          href="https://github.com/evoluteur/binaural-beats"
+          target="_blank"
+          rel="noopener"
+          >GitHub</a
+        >
+        with MIT license.
+      </p>
+      <p>
+        (c) 2026
+        <a href="https://evoluteur.github.io/" target="_blank" rel="noopener"
+          >Olivier Giulieri</a
+        >
+      </p>
+    </div>
+
+    <script src="beats.js"></script>
+    <script>
+      const PX = 80; // pixels per Hz
+      const TOP = 30;
+      const MAX_HZ = 42;
+      const y = (hz) => TOP + hz * PX;
+
+      const div = (cls, css, html) => {
+        const d = document.createElement("div");
+        d.className = cls;
+        Object.assign(d.style, css);
+        if (html) d.innerHTML = html;
+        return d;
+      };
+
+      const chart = () => {
+        const c = document.getElementById("chart");
+        c.style.height = y(MAX_HZ) + 40 + "px";
+        c.appendChild(
+          div("axis", { height: y(MAX_HZ) - TOP + "px", top: y(0) + "px" }),
+        );
+
+        BANDS.forEach((b) => {
+          const to = Math.min(b.to, MAX_HZ);
+          c.appendChild(
+            div("band", {
+              top: y(b.from) + "px",
+              height: (to - b.from) * PX + "px",
+              backgroundColor: b.color,
+            }),
+          );
+          c.appendChild(
+            div(
+              "bandname",
+              { top: y(b.from) + 6 + "px", backgroundColor: b.color },
+              `<b>${b.name}</b> ${b.from} - ${b.to} Hz<br /><i>${b.state}</i>`,
+            ),
+          );
+        });
+
+        for (let hz = 0; hz <= MAX_HZ; hz++) {
+          c.appendChild(div("tick", { top: y(hz) + "px" }));
+          if (hz % 5 === 0 || hz === 1) {
+            c.appendChild(div("hz", { top: y(hz) + "px" }, hz + " Hz"));
+          }
+        }
+
+        PRESETS.forEach((p) => {
+          c.appendChild(div("dot", { top: y(p.beat) + "px" }));
+          c.appendChild(
+            div(
+              "preset",
+              { top: y(p.beat) + "px" },
+              `<a href="index.html?beat=${p.beat}&carrier=${p.carrier}"
+                 title="Play ${p.beat} Hz on a ${p.carrier} Hz carrier"
+                ><b>${p.beat} Hz</b>${p.name}</a>`,
+            ),
+          );
+        });
+      };
+    </script>
+  </body>
+</html>

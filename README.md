@@ -56,6 +56,6 @@ Binaural Beats is Open Source at [GitHub](https://github.com/evoluteur/binaural-
 
 Encourage this project by [becoming a sponsor](https://github.com/sponsors/evoluteur).
 
-You may also be interested in my other projects [Healing Frequencies](https://github.com/evoluteur/healing-frequencies), [Sacred Geometry](https://github.com/evoluteur/sacred-geometry), and [Motivational Numerology](https://github.com/evoluteur/motivational-numerology).
+You may also be interested in my other projects [Healing Frequencies](https://github.com/evoluteur/healing-frequencies), [Cymatics](https://github.com/evoluteur/cymatics), [Sacred Geometry](https://github.com/evoluteur/sacred-geometry), [Platonic Solids](https://github.com/evoluteur/platonic-solids), [Motivational Numerology](https://github.com/evoluteur/motivational-numerology), and [Archimedean Solids](https://github.com/evoluteur/archimedean-solids).
 
 (c) 2026 [Olivier Giulieri](https://evoluteur.github.io/)

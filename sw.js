@@ -1,4 +1,4 @@
-const CACHE = "bb-v1";
+const CACHE = "bb-v2";
 const ASSETS = [
   "./",
   "index.html",

@@ -56,6 +56,6 @@ Binaural Beats is Open Source at [GitHub](https://github.com/evoluteur/binaural-
 
 Had fun browsing the app? [Buy me a coffee by becoming a sponsor](https://github.com/sponsors/evoluteur).
 
-You may also be interested in my other projects [Healing Frequencies](https://github.com/evoluteur/healing-frequencies), [Cymatics](https://github.com/evoluteur/cymatics), [Sacred Geometry](https://github.com/evoluteur/sacred-geometry), [Platonic Solids](https://github.com/evoluteur/platonic-solids), [Motivational Numerology](https://github.com/evoluteur/motivational-numerology), and [Archimedean Solids](https://github.com/evoluteur/archimedean-solids). See them all on [Esoterica](https://evoluteur.github.io/esoterica.html).
+You may also be interested in my other projects [Healing Frequencies](https://github.com/evoluteur/healing-frequencies), [Crystal Singing Bowls](https://github.com/evoluteur/crystal-singing-bowls), [Cymatics](https://github.com/evoluteur/cymatics), [Sacred Geometry](https://github.com/evoluteur/sacred-geometry), [Platonic Solids](https://github.com/evoluteur/platonic-solids), [Motivational Numerology](https://github.com/evoluteur/motivational-numerology), and [Archimedean Solids](https://github.com/evoluteur/archimedean-solids). See them all on [Esoterica](https://evoluteur.github.io/esoterica.html).
 
 (c) 2026 [Olivier Giulieri](https://evoluteur.github.io/)
